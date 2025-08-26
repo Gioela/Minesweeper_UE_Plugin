@@ -69,7 +69,20 @@ Saved/*
 
 # Compiled source files for the engine to use
 Intermediate/*
-Plugins/**/Intermediate/*
+*/Plugins/**/Intermediate/*
 
 # Cache files for the editor to use
 DerivedDataCache/*
+
+# Custom project ignore files and folders
+# MinesweeperGame Unreal Engine Project
+*/Config/*
+*/Binaries/*
+*/Saved/*
+*/Intermediate/*
+*/DerivedDataCache/*
+*/Source/*
+*.uproject
+
+# MinesweeperPlugin Folders
+*/Plugins/MinesweeperPlugin/Binaries/*
