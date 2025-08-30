@@ -44,7 +44,9 @@ private:
     TSet<int32> MineSetIndex;
 
 private:
+
     void OnCellClicked(int32 Index);
+
     void RevealEmptyCells(int32 Index);
 
     void ResetAllProperties();

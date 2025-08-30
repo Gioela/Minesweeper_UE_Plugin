@@ -23,7 +23,7 @@ void SButtonGrid::Construct(const FArguments& InArgs)
                 .ButtonColorAndOpacity(this, &SButtonGrid::SetButtonTransparency)
         ];
 
-    OnMineClicked = InArgs._OnMineClicked;
+    //OnMineClicked = InArgs._OnMineClicked;
     OnCellClicked = InArgs._OnCellClicked;
 }
 
@@ -37,25 +37,26 @@ FReply SButtonGrid::OnButtonClicked()
     UE_LOG(LogTemp, Error, TEXT("1 button clicked at index: %d"), CellIndex);
 
     if (bGameOver || bIsClicked)
+    //if (bGameOver || !IsEnabled())
+    {
         return FReply::Handled();
+    }
 
     if (bIsMine)
     {
         bGameOver = true;
-        OnMineClicked.ExecuteIfBound();
+        //OnMineClicked.ExecuteIfBound();
 
-        FText Message = FText::FromString("YOU LOSE! Sorry");
-        FMessageDialog::Open(EAppMsgType::Ok, Message, FText::FromString(TEXT("Game Over")));
+        //FText Message = FText::FromString("YOU LOSE! Sorry");
+        //FMessageDialog::Open(EAppMsgType::Ok, Message, FText::FromString(TEXT("Game Over")));
 
-        UE_LOG(LogTemp, Error, TEXT("Game Over! The mine has exploded"));
-    }
-    else
-    {
-        OnCellClicked.ExecuteIfBound(CellIndex);
+        //UE_LOG(LogTemp, Error, TEXT("Game Over! The mine has exploded"));
     }
 
+    //SetEnabled(false);
     bIsClicked = true;
     bVisible = false;
+    OnCellClicked.ExecuteIfBound(CellIndex);
 
     return FReply::Handled();
 }
@@ -111,11 +112,13 @@ void SButtonGrid::SetIsMine(bool bInValue)
     bIsMine = bInValue;
 }
 
+// TODO REFACTOR
 bool SButtonGrid::GetIsClicked() const
 {
     return bIsClicked;
 }
 
+// TODO REFACTOR
 void SButtonGrid::SetClicked(bool bInValue)
 {
     bIsClicked = bInValue;
@@ -134,18 +137,24 @@ void SButtonGrid::AddMinaNeighbor()
 
 void SButtonGrid::ResetButton()
 {
-    bIsClicked = false;
     bIsMine = false;
     bGameOver = false;
     bVisible = true;
     MineNeighbor = 0;
+
+    // TODO REFACTOR
+    bIsClicked = false;
+    //SetEnabled(true);
 }
 
 void SButtonGrid::SetGameOver()
 {
-    UE_LOG(LogTemp, Error, TEXT("Game Over! Mina exploses -> change color"));
+    //UE_LOG(LogTemp, Error, TEXT("Game Over! Mina exploses -> change color"));
     bGameOver = true;
+
+    // TODO REFACTOR
     bIsClicked = true;
+    //SetEnabled(true);
 
     SetButtonTransparency();
     GetTextOnButton();
