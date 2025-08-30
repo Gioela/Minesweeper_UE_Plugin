@@ -22,13 +22,11 @@ public:
     // Slate arguments allow customization when creating the widget.
     SLATE_BEGIN_ARGS(SButtonGrid)
         : _bIsMine(false)
-        , _bVisible(true)
-        , _bIsClicked(false)  // TODO REFACTOR
+        , _bIsClicked(false)
         , _MineNeighbor(0)
         {}
         SLATE_ARGUMENT(bool, bIsMine)
-        SLATE_ARGUMENT(bool, bVisible)
-        SLATE_ARGUMENT(bool, bIsClicked)    // TODO REFACTOR
+        SLATE_ARGUMENT(bool, bIsClicked)
         SLATE_ARGUMENT(int32, MineNeighbor)
         
         SLATE_ATTRIBUTE(FText, Text)
@@ -49,7 +47,6 @@ public:
     bool GetIsMine() const;
     void SetIsMine(bool InValue);
 
-    // TODO REFACTOR
     bool GetIsClicked() const;
     void SetClicked(bool InValue);
 
@@ -67,7 +64,6 @@ private:
 
     int32 MineNeighbor;
     bool bIsMine;
-    bool bVisible;
     bool bIsClicked;
     bool bGameOver = false;
 

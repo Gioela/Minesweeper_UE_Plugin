@@ -42,6 +42,8 @@ private:
 
 	TSharedRef<SHorizontalBox> GenerateSettingsBox();
 	TSharedRef<SHorizontalBox> GenerateGameBox();
+
+	// debug: visualize level properties
 	void PrintLevelProperties();
 };
 

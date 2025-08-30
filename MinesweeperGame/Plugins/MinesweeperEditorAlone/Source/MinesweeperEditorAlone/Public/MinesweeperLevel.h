@@ -6,6 +6,7 @@
 #include <SMinesweeperGrid.h>
 
 class SMinesweeperGrid;
+
 /**
  * 
  */
@@ -26,10 +27,11 @@ public:
 	void SetColumns(const int32 InColumns);
 	void SetMines(const int32 InMines);
 
-	void UpdateLevelDetails(const int32& InRows, const int32& InColumns, const int32& InMine);
-
+	// generate game grid
 	void GenerateGrid();
-	void GenerateMinesIndexes();
+
+	// update level properties
+	void UpdateLevelDetails(const int32& InRows, const int32& InColumns, const int32& InMine);
 
 public:
 	// Level properties
@@ -39,9 +41,6 @@ public:
 
 	// Slate game grid widget
 	TSharedPtr<SMinesweeperGrid> MinesweeperGridWidget;
-
-	// Set to store the mine positions
-	TSet<int32> MineIndexPositions;
 
 };
 

@@ -45,18 +45,17 @@ private:
 
 private:
 
-    void OnCellClicked(int32 Index);
+    TSharedPtr<SButtonGrid> GetCellAtIndex(const int32 InRow, const int32 InCol) const;
+
+    void GenerateGrid(int32 InRows, int32 InColumns, int32 InMine);
+        
+    void CalculateNeighbords();
+    void InitializeMineSetIndex(int32 InMine);
 
     void RevealEmptyCells(int32 Index);
 
-    void ResetAllProperties();
-
-    TSharedPtr<SButtonGrid> GetCellAtIndex(const int32 InRow, const int32 InCol) const;
-
-    void AssignNeighbords();
-
-    void GenerateGrid(int32 InRows, int32 InColumns, int32 InMine);
-    void InitializeMineSetIndex(int32 InMine);
-
+    void OnCellClicked(int32 Index);
     void OnEndGame();
+
+    void ResetAllProperties();
 };

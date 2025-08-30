@@ -7,7 +7,6 @@
 void SButtonGrid::Construct(const FArguments& InArgs)
 {
     bIsMine = InArgs._bIsMine;
-    bVisible = InArgs._bVisible;
     bIsClicked = InArgs._bIsClicked;
     MineNeighbor = InArgs._MineNeighbor;
 
@@ -23,7 +22,6 @@ void SButtonGrid::Construct(const FArguments& InArgs)
                 .ButtonColorAndOpacity(this, &SButtonGrid::SetButtonTransparency)
         ];
 
-    //OnMineClicked = InArgs._OnMineClicked;
     OnCellClicked = InArgs._OnCellClicked;
 }
 
@@ -35,32 +33,17 @@ void SButtonGrid::Initialize()
 FReply SButtonGrid::OnButtonClicked()
 {
     if (bGameOver || bIsClicked)
-    //if (bGameOver || !IsEnabled())
     {
-        UE_LOG(LogTemp, Error, TEXT("[SButtonGrid::OnButtonClicked] 2 index: %d"), CellIndex);
-
         return FReply::Handled();
     }
 
     if (bIsMine)
     {
         bGameOver = true;
-        //OnMineClicked.ExecuteIfBound();
-
-        //FText Message = FText::FromString("YOU LOSE! Sorry");
-        //FMessageDialog::Open(EAppMsgType::Ok, Message, FText::FromString(TEXT("Game Over")));
-
-        //UE_LOG(LogTemp, Error, TEXT("Game Over! The mine has exploded"));
     }
 
-    UE_LOG(LogTemp, Error, TEXT("[SButtonGrid::OnButtonClicked][ 3] START index: %d"), CellIndex);
-
-    //SetEnabled(false);
-    bVisible = false;
     OnCellClicked.ExecuteIfBound(CellIndex);
     bIsClicked = true;
-
-    UE_LOG(LogTemp, Error, TEXT("[SButtonGrid::OnButtonClicked][ 4] END index: %d"), CellIndex);
 
     return FReply::Handled();
 }
@@ -123,13 +106,11 @@ void SButtonGrid::SetIsMine(bool bInValue)
     bIsMine = bInValue;
 }
 
-// TODO REFACTOR
 bool SButtonGrid::GetIsClicked() const
 {
     return bIsClicked;
 }
 
-// TODO REFACTOR
 void SButtonGrid::SetClicked(bool bInValue)
 {
     bIsClicked = bInValue;
@@ -150,170 +131,16 @@ void SButtonGrid::ResetButton()
 {
     bIsMine = false;
     bGameOver = false;
-    bVisible = true;
+    bIsClicked = false;
     MineNeighbor = 0;
 
-    // TODO REFACTOR
-    bIsClicked = false;
-    //SetEnabled(true);
 }
 
 void SButtonGrid::SetGameOver()
 {
-    //UE_LOG(LogTemp, Error, TEXT("Game Over! Mina exploses -> change color"));
     bGameOver = true;
-
-    // TODO REFACTOR
     bIsClicked = true;
-    //SetEnabled(true);
 
     SetButtonTransparency();
     GetTextOnButton();
 }
-
-//void FMinesweeperLevel::ClickButton(TSharedPtr<SMinesweeperButton> InButton, const int32 InIndex)
-//{
-//    if (InButton.IsValid())
-//    {
-//        if (InButton->IsEnabled())
-//        {
-//            if (InButton->HasMine)
-//            {
-//                // Handle mine button click
-//                MineButtonClicked(InButton, InIndex);
-//            }
-//            else
-//            {
-//                // Handle free button click
-//                FreeButtonClicked(InButton, InIndex);
-//
-//                // Check for win condition
-//                if (AvailableCellsCounter <= Mines)
-//                {
-//                    int32 Size = GetLevelSize();
-//
-//                    // Reveal all mines
-//                    for (int32 Index : MinesIndexes)
-//                    {
-//                        // Ensure index is within bounds
-//                        if (Index < Size)
-//                        {
-//                            // Reveal mine button
-//                            SlotButtons[Index]->SetBorderBackgroundColor(FMinesweeperStyleSet::Get().GetSlateColor(TEXT("Minesweeper.WinMineColor")));
-//                            SlotButtons[Index]->EnableImage(true);
-//                        }
-//                    }
-//                    // Trigger win event
-//                    OnMinesweeperEnd.ExecuteIfBound(true);
-//                }
-//            }
-//        }
-//    }
-//}
-
-//// Handle mine button click
-//void FMinesweeperLevel::MineButtonClicked(TSharedPtr<SMinesweeperButton> InButton, const int32 InIndex)
-//{
-//	int32 Size = GetLevelSize();
-//
-//	// Reveal clicked mine
-//	InButton->SetBorderBackgroundColor(FMinesweeperStyleSet::Get().GetSlateColor(TEXT("Minesweeper.HasMineColor")));
-//	InButton->EnableImage(true);
-//
-//	// Reveal all other mines
-//	for (int32 Index : MinesIndexes)
-//	{
-//		// Ensure index is within bounds and not the clicked mine
-//		if (Index != InIndex)
-//		{
-//			// Ensure index is within bounds
-//			if (Index < Size)
-//			{
-//				// Reveal mine button
-//				SlotButtons[Index]->SetBorderBackgroundColor(FMinesweeperStyleSet::Get().GetSlateColor(TEXT("Minesweeper.HasMineColor")));
-//				SlotButtons[Index]->EnableImage(true);
-//			}
-//		}
-//	}
-//
-//	// Trigger lose event
-//	OnMinesweeperEnd.ExecuteIfBound(false);
-//}
-
-//// Handle free button click
-//void SButtonGrid::FreeButtonClicked(TSharedPtr<SMinesweeperButton> InButton, const int32 InIndex)
-//{
-//	InButton->SetEnabled(false);
-//
-//	// If the button has adjacent mines, display the count
-//	if (InButton->AdjacentMinesCounter > 0)
-//	{
-//		// Display the number of adjacent mines
-//		FString Msg = FString::Printf(TEXT("%i"), InButton->AdjacentMinesCounter);
-//		InButton->EnableTextBlock(true, FText::FromString(Msg));
-//
-//		// Set text color based on the number of adjacent mines
-//		FString ColorString = TEXT("Minesweeper.MineColor_") + Msg;
-//		InButton->SetForegroundColor(FMinesweeperStyleSet::Get().GetSlateColor(TEXT("Minesweeper.DisabledColor")));
-//		InButton->SetBorderBackgroundColor(FMinesweeperStyleSet::Get().GetSlateColor(*ColorString));
-//	}
-//	else // No adjacent mines
-//	{
-//		// If no adjacent mines, reveal neighboring buttons
-//		InButton->SetBorderBackgroundColor(FMinesweeperStyleSet::Get().GetSlateColor(TEXT("Minesweeper.DisabledColor")));
-//
-//		// Calculate row and column from index
-//		int32 Row = InIndex / GridCols;
-//		int32 Col = InIndex % GridCols;
-//
-//		// Reveal neighboring buttons (up, down, left, right)
-//		TSharedPtr<SMinesweeperButton> NeighbourButton = nullptr;
-//		int32 NeighbourIndex = InIndex;
-//
-//		// Check and reveal the button below
-//		if (Row + 1 < GridRows)
-//		{
-//			// Calculate index of the button below
-//			NeighbourIndex = (Row + 1) * GridCols + Col;
-//			// Get the button below
-//			NeighbourButton = GetButtonAtIndex(Row + 1, Col);
-//			// Recursively click the button below
-//			ClickButton(NeighbourButton, NeighbourIndex);
-//		}
-//
-//		// Check and reveal the button above
-//		if (Row - 1 >= 0)
-//		{
-//			// Calculate index of the button above
-//			NeighbourIndex = (Row - 1) * GridCols + Col;
-//			// Get the button above
-//			NeighbourButton = GetButtonAtIndex(Row - 1, Col);
-//			// Recursively click the button above
-//			ClickButton(NeighbourButton, NeighbourIndex);
-//		}
-//
-//		// Check and reveal the button to the right
-//		if (Col + 1 < GridCols)
-//		{
-//			// Calculate index of the button to the right
-//			NeighbourIndex = Row * GridCols + (Col + 1);
-//			// Get the button to the right
-//			NeighbourButton = GetButtonAtIndex(Row, Col + 1);
-//			// Recursively click the button to the right
-//			ClickButton(NeighbourButton, NeighbourIndex);
-//		}
-//
-//		// Check and reveal the button to the left
-//		if (Col - 1 >= 0)
-//		{
-//			// Calculate index of the button to the left
-//			NeighbourIndex = Row * GridCols + (Col - 1);
-//			// Get the button to the left
-//			NeighbourButton = GetButtonAtIndex(Row, Col - 1);
-//			// Recursively click the button to the left
-//			ClickButton(NeighbourButton, NeighbourIndex);
-//		}
-//	}
-//	// Decrement available cells counter
-//	AvailableCellsCounter--;
-//}

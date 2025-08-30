@@ -292,7 +292,7 @@ TSharedRef<SHorizontalBox> FMinesweeperEditorAloneModule::GenerateSettingsBox()
 								.AutoHeight()
 								[
 									SNew(SButton)
-										.Text(LOCTEXT("ButtonText", "Print Log Level Info"))
+										.Text(LOCTEXT("ButtonText", "(Debug) Print Log Level Info"))
 										.OnClicked_Lambda(
 											[this]() -> FReply
 											{
@@ -322,6 +322,7 @@ TSharedRef<SHorizontalBox> FMinesweeperEditorAloneModule::GenerateGameBox()
 						[
 							SNew(STextBlock)
 								.Text(LOCTEXT("GameStatus", "Status Game"))
+								.Justification(ETextJustify::Center)
 						]
 						+ SVerticalBox::Slot()
 						.FillHeight(1.0f)
@@ -334,10 +335,8 @@ TSharedRef<SHorizontalBox> FMinesweeperEditorAloneModule::GenerateGameBox()
 								.Padding(2.f)
 								[
 									SAssignNew(Level->MinesweeperGridWidget, SMinesweeperGrid)
-										//SAssignNew(MinesweeperGridWidget, SMinesweeperGrid)
 										.Rows(Level->GetRows())
 										.Columns(Level->GetColumns())
-										//.Mines(Level->GetMines())
 								]
 						]
 				]

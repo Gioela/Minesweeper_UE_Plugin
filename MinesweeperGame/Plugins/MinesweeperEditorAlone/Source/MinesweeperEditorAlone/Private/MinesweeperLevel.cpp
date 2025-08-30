@@ -70,28 +70,3 @@ void MinesweeperLevel::GenerateGrid()
 {
 	MinesweeperGridWidget->Initialize(Rows, Columns, Mines);
 }
-
-void MinesweeperLevel::GenerateMinesIndexes()
-{
-	if (Mines < 1 || Mines >= GetSize()-1)
-	{
-		Mines = 5;
-	}
-
-	MineIndexPositions.Empty(Mines);
-	int32 Size = GetSize();
-	int32 Index = -1;
-
-	// Randomize mine positions
-	for (int32 It = 0; It < Mines; It++)
-	{
-		// Ensure unique indexes
-		do
-		{
-			Index = FMath::RandRange(0, Size - 1);
-		} while (MineIndexPositions.Contains(Index));
-
-		// Add new unique mine index
-		MineIndexPositions.Add(Index);
-	}
-}
