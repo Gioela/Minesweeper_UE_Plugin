@@ -84,5 +84,5 @@ DerivedDataCache/*
 */Source/*
 *.uproject
 
-# MinesweeperPlugin Folders
-*/Plugins/MinesweeperPlugin/Binaries/*
+# MinesweeperEditorAlone Folders
+*/Plugins/MinesweeperEditorAlone/Binaries/*
