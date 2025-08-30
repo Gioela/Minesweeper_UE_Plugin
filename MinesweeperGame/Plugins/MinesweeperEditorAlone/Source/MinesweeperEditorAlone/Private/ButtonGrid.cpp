@@ -34,11 +34,11 @@ void SButtonGrid::Initialize()
 
 FReply SButtonGrid::OnButtonClicked()
 {
-    UE_LOG(LogTemp, Error, TEXT("1 button clicked at index: %d"), CellIndex);
-
     if (bGameOver || bIsClicked)
     //if (bGameOver || !IsEnabled())
     {
+        UE_LOG(LogTemp, Error, TEXT("[SButtonGrid::OnButtonClicked] 2 index: %d"), CellIndex);
+
         return FReply::Handled();
     }
 
@@ -53,10 +53,14 @@ FReply SButtonGrid::OnButtonClicked()
         //UE_LOG(LogTemp, Error, TEXT("Game Over! The mine has exploded"));
     }
 
+    UE_LOG(LogTemp, Error, TEXT("[SButtonGrid::OnButtonClicked][ 3] START index: %d"), CellIndex);
+
     //SetEnabled(false);
-    bIsClicked = true;
     bVisible = false;
     OnCellClicked.ExecuteIfBound(CellIndex);
+    bIsClicked = true;
+
+    UE_LOG(LogTemp, Error, TEXT("[SButtonGrid::OnButtonClicked][ 4] END index: %d"), CellIndex);
 
     return FReply::Handled();
 }
@@ -100,6 +104,13 @@ FSlateColor SButtonGrid::SetButtonTransparency() const
         }
     }
     return Color;
+}
+
+void SButtonGrid::RevealNeighbord()
+{
+    bIsClicked = true;
+    SetButtonTransparency();
+    GetTextOnButton();
 }
 
 bool SButtonGrid::GetIsMine() const

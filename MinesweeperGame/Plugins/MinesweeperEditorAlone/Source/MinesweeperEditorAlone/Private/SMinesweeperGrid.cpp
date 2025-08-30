@@ -100,8 +100,12 @@ void SMinesweeperGrid::InitializeMineSetIndex(int32 InMine)
 
 void SMinesweeperGrid::OnCellClicked(int32 Index)
 {
+    UE_LOG(MinesweeperLevLog, Warning, TEXT("[SMinesweeperGrid::OnCellClicked][ 1] START index.%d"), Index);
+
     if (!Cells.IsValidIndex(Index))
     {
+        UE_LOG(MinesweeperLevLog, Warning, TEXT("[SMinesweeperGrid::OnCellClicked][ 2] NO VALID index.%d"), Index);
+
         return;
     }
 
@@ -116,17 +120,27 @@ void SMinesweeperGrid::OnCellClicked(int32 Index)
         return;
     }
 
+    UE_LOG(MinesweeperLevLog, Warning, TEXT("[SMinesweeperGrid::OnCellClicked][ 3] index.%d"), Index);
+
     if (Cell->GetMineNeighbor() > 0)
     //if (Cell->GetIsMine() || Cell->GetMineNeighbor() > 0)
     {
+        UE_LOG(MinesweeperLevLog, Warning, TEXT("[SMinesweeperGrid::OnCellClicked][ 4] Cell index.%d has neighbord"), Index);
+
         // TODO REFACTOR
         Cell->SetClicked(true);
         //Cell->SetEnabled(false);
+        //Cell->RevealNeighbord();
+
         AvailableButtons--;
         return;
     }
 
+    UE_LOG(MinesweeperLevLog, Warning, TEXT("[SMinesweeperGrid::OnCellClicked][ 6] START Reveal empty cell - index.%d"), Index);
+
     RevealEmptyCells(Index);
+
+    UE_LOG(MinesweeperLevLog, Warning, TEXT("[SMinesweeperGrid::OnCellClicked][ 7] END Reveal empty cell - index.%d"), Index);
 }
 
 void SMinesweeperGrid::OnGameOver()
@@ -151,23 +165,15 @@ void SMinesweeperGrid::AssignNeighbords()
 		// Reset all buttons
 		for (int32 Index : MineSetIndex)
 		{
-			// Calculate row and column from index
-			int32 Row = Index / Cols;   // integer result
-			int32 Col = Index % Cols;   // rest, division remainder
-            
-            /*
-            *   r.6  c.9            Indexes: 
-            *   M - M - - - - - M   0 2 8
-            *   - - - - - - - - -
-            *   M - - - - M - - -   18 23
-            *   - - M - - M - - M   29 32 35
-            *   - - - - - - - - -
-            *   M - - - M - - - M   45 49 53
-            */
+            UE_LOG(MinesweeperLevLog, Error, TEXT("[AssignNeighbords] MINA Index i.%d"), Index);
 
+			// Calculate row and column from index
+			int32 Row = Index / Cols;
+			int32 Col = Index % Cols;
+            
 			// Increment adjacent mine counters for neighboring buttons
             
-            UE_LOG(MinesweeperLevLog, Error, TEXT("[AssignNeighbords] BOTTOM ROW"));
+            UE_LOG(MinesweeperLevLog, Warning, TEXT("[AssignNeighbords] BOTTOM ROW"));
             // Neighbords at the BUTTOM ROW index
 			if (Row + 1 < Rows)
 			{
@@ -189,7 +195,7 @@ void SMinesweeperGrid::AssignNeighbords()
                 }
 			}
 
-            UE_LOG(MinesweeperLevLog, Error, TEXT("[AssignNeighbords] UPPER ROW"));
+            UE_LOG(MinesweeperLevLog, Warning, TEXT("[AssignNeighbords] UPPER ROW"));
             // Neighbords at the UPPER ROW index
             if (Row - 1 >= 0)
             {
@@ -209,7 +215,7 @@ void SMinesweeperGrid::AssignNeighbords()
                 }
             }
 
-            UE_LOG(MinesweeperLevLog, Error, TEXT("[AssignNeighbords] LEFT COLUM"));
+            UE_LOG(MinesweeperLevLog, Warning, TEXT("[AssignNeighbords] LEFT COLUM"));
             // Neighbords at the LEFT COLUM index
             if (Col - 1 >= 0 && Col < Cols)
             {
@@ -217,7 +223,7 @@ void SMinesweeperGrid::AssignNeighbords()
                 GetCellAtIndex(Row, Col - 1)->AddMinaNeighbor();
             }
 
-            UE_LOG(MinesweeperLevLog, Error, TEXT("[AssignNeighbords] RIGHT COLUM"));
+            UE_LOG(MinesweeperLevLog, Warning, TEXT("[AssignNeighbords] RIGHT COLUM"));
             // Neighbords at the RIGHT COLUM index
             if (Col + 1 < Cols)
             {
@@ -323,15 +329,29 @@ TSharedPtr<SButtonGrid> SMinesweeperGrid::GetCellAtIndex(const int32 InRow, cons
 
 void SMinesweeperGrid::RevealEmptyCells(int32 Index)
 {
+    UE_LOG(MinesweeperLevLog, Error, TEXT("[SMinesweeperGrid::RevealEmptyCells][ 1] START index.%d"), Index);
+
+    // index is a valid position in cells array?
     if (!Cells.IsValidIndex(Index))
     {
+        UE_LOG(MinesweeperLevLog, Warning, TEXT("[SMinesweeperGrid::RevealEmptyCells][ 2] NO VALID cell index.%d"), Index);
+
         return;
     }
 
     TSharedRef<SButtonGrid> Cell = Cells[Index];
-    if (Cell->GetIsClicked() || Cell->GetIsMine() || Cell->GetMineNeighbor() > 0)
-    //if (Cell->IsEnabled() || Cell->GetIsMine() || Cell->GetMineNeighbor() > 0)
+
+    if (Cell->GetMineNeighbor() > 0)
     {
+        UE_LOG(MinesweeperLevLog, Warning, TEXT("[SMinesweeperGrid::RevealEmptyCells][ 3] Cell i.%d has neighbord"), Index);
+        Cell->RevealNeighbord();
+    }
+
+    // cell is: clicked || mine or has neighboard?
+    if (Cell->GetIsClicked() || Cell->GetIsMine() || Cell->GetMineNeighbor() > 0)
+    {
+        UE_LOG(MinesweeperLevLog, Warning, TEXT("[SMinesweeperGrid::RevealEmptyCells][ 4] Cell i.%d is (clicked || mine || with neighboard)"), Index);
+
         return;
     }
 
@@ -342,12 +362,17 @@ void SMinesweeperGrid::RevealEmptyCells(int32 Index)
     int32 Row = Index / Cols;
     int32 Col = Index % Cols;
 
+    UE_LOG(MinesweeperLevLog, Warning, TEXT("[SMinesweeperGrid::RevealEmptyCells][ 5] cell i.%d is in r.%d c.%d"), Index, Row, Col);
+
+    UE_LOG(MinesweeperLevLog, Warning, TEXT("[SMinesweeperGrid::RevealEmptyCells][ 6] CHECK neighbords cell"));
+
     for (int32 dRow = -1; dRow <= 1; ++dRow)
     {
         for (int32 dCol = -1; dCol <= 1; ++dCol)
         {
             if (dRow == 0 && dCol == 0) 
             {
+                UE_LOG(MinesweeperLevLog, Warning, TEXT("[SMinesweeperGrid::RevealEmptyCells][ 7] present cell i.%d (r.%d c.%d)"), Index, dRow, dCol);
                 continue;
             }
 
@@ -356,10 +381,19 @@ void SMinesweeperGrid::RevealEmptyCells(int32 Index)
 
             if (NewRow >= 0 && NewRow < Rows && NewCol >= 0 && NewCol < Cols)
             {
+                UE_LOG(MinesweeperLevLog, Warning, TEXT("[SMinesweeperGrid::RevealEmptyCells][ 8] cell i.%d (r.%d c.%d) evaluate cell coord (r.%d c.%d) VALID POSITION"), Index, Row, Col, NewRow, NewCol);
+                
                 int32 NewIndex = NewRow * Cols + NewCol;
                 RevealEmptyCells(NewIndex);
+                UE_LOG(MinesweeperLevLog, Warning, TEXT("[SMinesweeperGrid::RevealEmptyCells][ 8] cell i.%d (r.%d c.%d) evaluate cell coord (r.%d c.%d) VALID POSITION FINISH"), Index, Row, Col, NewRow, NewCol);
+                //UE_LOG(MinesweeperLevLog, Warning, TEXT("[SMinesweeperGrid::RevealEmptyCells][ 12] cell i.%d (r.%d c.%d) evaluate cell coord (r.%d c.%d) VALID POSITION"), Index, Row, Col, NewRow, NewCol);
+            }
+            else
+            {
+                UE_LOG(MinesweeperLevLog, Error, TEXT("[SMinesweeperGrid::RevealEmptyCells][ 8] cell i.%d (r.%d c.%d) evaluate cell coord (r.%d c.%d) NO VALID POSITION"), Index, Row, Col, NewRow, NewCol);
             }
         }
     }
+    UE_LOG(MinesweeperLevLog, Error, TEXT("[SMinesweeperGrid::RevealEmptyCells][13] CLOSE index.%d"), Index);
     AvailableButtons--;
 }

@@ -55,6 +55,7 @@ public:
 
     int32 GetMineNeighbor();
     void AddMinaNeighbor();
+    void RevealNeighbord();
 
     void ResetButton();
     void SetGameOver();
