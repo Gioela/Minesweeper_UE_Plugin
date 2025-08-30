@@ -58,5 +58,5 @@ private:
     void GenerateGrid(int32 InRows, int32 InColumns, int32 InMine);
     void InitializeMineSetIndex(int32 InMine);
 
-    void OnGameOver();
+    void OnEndGame();
 };

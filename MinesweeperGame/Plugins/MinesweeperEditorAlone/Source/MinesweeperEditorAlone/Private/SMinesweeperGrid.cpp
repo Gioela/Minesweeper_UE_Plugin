@@ -116,7 +116,7 @@ void SMinesweeperGrid::OnCellClicked(int32 Index)
         FMessageDialog::Open(EAppMsgType::Ok, Message, FText::FromString(TEXT("Game Over")));
 
         UE_LOG(LogTemp, Error, TEXT("Game Over! The mine has exploded"));
-        OnGameOver();
+        OnEndGame();
         return;
     }
 
@@ -130,20 +130,32 @@ void SMinesweeperGrid::OnCellClicked(int32 Index)
         // TODO REFACTOR
         Cell->SetClicked(true);
         //Cell->SetEnabled(false);
-        //Cell->RevealNeighbord();
 
         AvailableButtons--;
-        return;
+        //return;
+        //OnEndGame();
+    }
+    else
+    {
+        UE_LOG(MinesweeperLevLog, Warning, TEXT("[SMinesweeperGrid::OnCellClicked][ 6] START Reveal empty cell - index.%d"), Index);
+
+        RevealEmptyCells(Index);
+        UE_LOG(MinesweeperLevLog, Warning, TEXT("[SMinesweeperGrid::OnCellClicked][ 7] END Reveal empty cell - index.%d"), Index);
+
     }
 
-    UE_LOG(MinesweeperLevLog, Warning, TEXT("[SMinesweeperGrid::OnCellClicked][ 6] START Reveal empty cell - index.%d"), Index);
+    UE_LOG(MinesweeperLevLog, Warning, TEXT("[SMinesweeperGrid::OnCellClicked][ 8] END AvailableButtons ab.%d"), AvailableButtons);
+    if (AvailableButtons < MineSetIndex.Num())
+    {
+        FText Message = FText::FromString("YOU WIN! Congrats");
+        FMessageDialog::Open(EAppMsgType::Ok, Message, FText::FromString(TEXT("The Winner is... YOU!")));
 
-    RevealEmptyCells(Index);
-
-    UE_LOG(MinesweeperLevLog, Warning, TEXT("[SMinesweeperGrid::OnCellClicked][ 7] END Reveal empty cell - index.%d"), Index);
+        UE_LOG(LogTemp, Error, TEXT("Player Wins! Congrats"));
+        OnEndGame();
+    }
 }
 
-void SMinesweeperGrid::OnGameOver()
+void SMinesweeperGrid::OnEndGame()
 {
     for (TSharedRef<SButtonGrid> Cell : Cells)
     {
@@ -316,7 +328,6 @@ TSharedPtr<SButtonGrid> SMinesweeperGrid::GetCellAtIndex(const int32 InRow, cons
     //{
     //    UE_LOG(MinesweeperLevLog, Error, TEXT("[GetCellAtIndex] MineSetIndex contains calculated"));
     //}
-
     //// Validate index
     //if (Index < 0 || Index >= Cells.Num())
     //{
@@ -345,6 +356,7 @@ void SMinesweeperGrid::RevealEmptyCells(int32 Index)
     {
         UE_LOG(MinesweeperLevLog, Warning, TEXT("[SMinesweeperGrid::RevealEmptyCells][ 3] Cell i.%d has neighbord"), Index);
         Cell->RevealNeighbord();
+        AvailableButtons--;
     }
 
     // cell is: clicked || mine or has neighboard?
@@ -394,6 +406,6 @@ void SMinesweeperGrid::RevealEmptyCells(int32 Index)
             }
         }
     }
-    UE_LOG(MinesweeperLevLog, Error, TEXT("[SMinesweeperGrid::RevealEmptyCells][13] CLOSE index.%d"), Index);
     AvailableButtons--;
+    UE_LOG(MinesweeperLevLog, Error, TEXT("[SMinesweeperGrid::RevealEmptyCells][13] CLOSE index.%d | AvailableButtons are ab.%d"), Index, AvailableButtons);
 }
