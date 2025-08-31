@@ -34,7 +34,7 @@ void SMinesweeperGrid::Initialize(int32 InRows, int32 InColumns, int32 InMine)
     Rows = InRows;
     Cols = InColumns;
     Mine = InMine;
-    AvailableButtons = Rows * Cols;
+    AvailableButtons = Rows * Cols - Mine;
 
     InitializeMineSetIndex(Mine);
     GenerateGrid(Rows, Cols, Mine);
