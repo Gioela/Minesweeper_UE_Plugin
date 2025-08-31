@@ -35,7 +35,7 @@ void FMinesweeperEditorAloneModule::StartupModule()
 	UToolMenus::RegisterStartupCallback(FSimpleMulticastDelegate::FDelegate::CreateRaw(this, &FMinesweeperEditorAloneModule::RegisterMenus));
 	
 	FGlobalTabmanager::Get()->RegisterNomadTabSpawner(MinesweeperEditorAloneTabName, FOnSpawnTab::CreateRaw(this, &FMinesweeperEditorAloneModule::OnSpawnPluginTab))
-		.SetDisplayName(LOCTEXT("FMinesweeperEditorAloneTabTitle", "MinesweeperEditorAlone"))
+		.SetDisplayName(LOCTEXT("FMinesweeperEditorAloneTabTitle", "Minesweeper Game"))
 		.SetMenuType(ETabSpawnerMenuType::Enabled);
 
 	// Initialize the Mine Grid
