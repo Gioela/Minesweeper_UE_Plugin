@@ -7,7 +7,7 @@
 #include "Interfaces/IPluginManager.h"
 #include "Styling/SlateStyleMacros.h"
 
-//#define RootToContentDir Style->RootToContentDir
+#define RootToContentDir Style->RootToContentDir
 
 TSharedPtr<FSlateStyleSet> FMinesweeperEditorAloneStyle::StyleInstance = nullptr;
 
@@ -39,33 +39,33 @@ const FVector2D Icon260x280(260.0f, 280.0f);
 
 TSharedRef< FSlateStyleSet > FMinesweeperEditorAloneStyle::Create()
 {
-	//TSharedRef< FSlateStyleSet > Style = MakeShareable(new FSlateStyleSet("MinesweeperEditorAloneStyle"));
-	//Style->SetContentRoot(IPluginManager::Get().FindPlugin("MinesweeperEditorAlone")->GetBaseDir() / TEXT("Resources"));
-	//Style->Set("MinesweeperEditorAlone.OpenPluginWindow", new IMAGE_BRUSH_SVG(TEXT("PlaceholderButtonIcon"), Icon20x20));
-
 	TSharedRef< FSlateStyleSet > Style = MakeShareable(new FSlateStyleSet(GetStyleSetName()));
+	Style->SetContentRoot(IPluginManager::Get().FindPlugin("MinesweeperEditorAlone")->GetBaseDir() / TEXT("Resources"));
+	Style->Set("MinesweeperEditorAlone.OpenPluginWindow", new IMAGE_BRUSH(TEXT("MinaCopilot"), Icon20x20));
+	//Style->Set("MinesweeperEditorAlone.OpenPluginWindow", new FSlateImageBrush(Style->RootToContentDir(TEXT("mina.png")), FVector2D(40.0f, 40.0f)));
 
-	FString RootPath = IPluginManager::Get().FindPlugin("MinesweeperEditorAlone")->GetBaseDir() + TEXT("/Resources");
-	Style->SetContentRoot(RootPath);
+	//TSharedRef< FSlateStyleSet > Style = MakeShareable(new FSlateStyleSet(GetStyleSetName()));
+
+	//FString RootPath = IPluginManager::Get().FindPlugin("MinesweeperEditorAlone")->GetBaseDir() + TEXT("/Resources");
+	//Style->SetContentRoot(RootPath);
 
 	//Style->Set("MinesweeperEditorAlone.OpenPluginWindow", new IMAGE_BRUSH_SVG(TEXT("PlaceholderButtonIcon"), Icon260x280));
-	Style->Set("MinesweeperEditorAlone.OpenPluginWindow", new FSlateImageBrush(Style->RootToContentDir(TEXT("mina.png")), FVector2D(40.0f, 40.0f)));
 
 
 
 
-	FString IconPath = RootPath + TEXT("/mina.png");
-	FSlateImageBrush* IconBrush48 = new FSlateImageBrush(IconPath, FVector2D(48.f, 48.f));
-	FSlateImageBrush* IconBrush32 = new FSlateImageBrush(IconPath, FVector2D(32.f, 32.f));
-	FSlateImageBrush* IconBrush16 = new FSlateImageBrush(IconPath, FVector2D(16.f, 16.f));
+	//FString IconPath = RootPath + TEXT("/mina.png");
+	//FSlateImageBrush* IconBrush48 = new FSlateImageBrush(IconPath, FVector2D(48.f, 48.f));
+	//FSlateImageBrush* IconBrush32 = new FSlateImageBrush(IconPath, FVector2D(32.f, 32.f));
+	//FSlateImageBrush* IconBrush16 = new FSlateImageBrush(IconPath, FVector2D(16.f, 16.f));
 
-	FString GameIconPath = RootPath + TEXT("/mina.png");
-	FSlateImageBrush* GameIconBrush = new FSlateImageBrush(GameIconPath, FVector2D(16.f, 16.f));
-	FSlateImageBrush* MineIconBrush = new FSlateImageBrush(GameIconPath, FVector2D(8.f, 8.f));
+	//FString GameIconPath = RootPath + TEXT("/mina.png");
+	//FSlateImageBrush* GameIconBrush = new FSlateImageBrush(GameIconPath, FVector2D(16.f, 16.f));
+	//FSlateImageBrush* MineIconBrush = new FSlateImageBrush(GameIconPath, FVector2D(8.f, 8.f));
 
 
-	Style->Set("Minesweeper.GameIcon", GameIconBrush);
-	Style->Set("Minesweeper.MineIcon", MineIconBrush);
+	//Style->Set("Minesweeper.GameIcon", GameIconBrush);
+	//Style->Set("Minesweeper.MineIcon", MineIconBrush);
 
 	return Style;
 }
