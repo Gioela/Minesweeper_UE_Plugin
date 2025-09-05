@@ -370,7 +370,7 @@ void FMinesweeperEditorAloneModule::RegisterMenus()
 }
 
 // for debugging
-void FMinesweeperEditorAloneModule::PrintLevelProperties()
+void FMinesweeperEditorAloneModule::PrintLevelProperties() const
 {
 	if (!Level)
 	{

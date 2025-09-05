@@ -50,7 +50,7 @@ public:
     bool GetIsClicked() const;
     void SetClicked(bool InValue);
 
-    int32 GetMineNeighbor();
+    int32 GetMineNeighbor() const;
     void AddMinaNeighbor();
     void RevealNeighbord();
 
@@ -72,7 +72,6 @@ private:
 
 private:
 
-    void OnVisulaUpdate();
     FReply OnButtonClicked();
     FText GetTextOnButton() const;
 };

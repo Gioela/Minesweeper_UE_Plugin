@@ -44,7 +44,7 @@ private:
 	TSharedRef<SHorizontalBox> GenerateGameBox();
 
 	// debug: visualize level properties
-	void PrintLevelProperties();
+	void PrintLevelProperties() const;
 };
 
 DECLARE_LOG_CATEGORY_EXTERN(MinesweeperLog, Log, All)

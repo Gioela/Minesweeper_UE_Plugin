@@ -116,7 +116,7 @@ void SButtonGrid::SetClicked(bool bInValue)
     bIsClicked = bInValue;
 }
 
-int32 SButtonGrid::GetMineNeighbor()
+int32 SButtonGrid::GetMineNeighbor() const
 {
     return MineNeighbor;
 }
